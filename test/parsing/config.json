@@ -1,0 +1,17 @@
+{
+    "section": {
+        "options": {
+            "names": [
+                "Option",
+                "Flags"
+            ],
+            "postfix": [
+                ":",
+                "s",
+                "s:",
+                "s\n",
+                "s:\n"
+            ]
+        }
+    }
+}

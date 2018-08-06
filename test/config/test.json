@@ -1,0 +1,60 @@
+{
+    "description": "tests of exceptions",
+    "tests": [
+        {
+            "description": "without delimiter",
+            "$ref": "./files/delimiter.absent.valid.json",
+            "valid": true,
+            "object": "exception"
+        },
+
+        {
+            "description": "with full config",
+            "$ref": "./files/full.config.valid.json",
+            "valid": true,
+            "object": "exception"
+        },
+        {
+            "description": "without names in section",
+            "$ref": "./files/names.absent.valid.json",
+            "valid": true,
+            "object": "exception"
+        },
+        {
+            "description": "with other data",
+            "$ref": "./files/other.data.invalid.json",
+            "valid": false,
+            "object": "exception"
+        },
+        {
+            "description": "without postfix",
+            "$ref": "./files/postfix.absent.valid.json",
+            "valid": true,
+            "object": "exception"
+        },
+        {
+            "description": "without section",
+            "$ref": "./files/section.absent.valid.json",
+            "valid": true,
+            "object": "exception"
+        },
+        {
+            "description": "without examples section",
+            "$ref": "./files/section.examples.absent.json",
+            "valid": true,
+            "object": "exception"
+        },
+        {
+            "description": "without options section",
+            "$ref": "./files/section.options.absent.json",
+            "valid": true,
+            "object": "exception"
+        },
+        {
+            "description": "without usage section",
+            "$ref": "./files/section.usage.absent.json",
+            "valid": true,
+            "object": "exception"
+        }
+    ]
+}

@@ -1,0 +1,113 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$version": "0.0.0",
+    "title": "Validation of config",
+    "description": "Validation of config",
+    "type": "object",
+    "properties": {
+        "section": {
+            "title": "Sections",
+            "description": "Sections of help",
+            "$ref": "#/definitions/section"
+        },
+        "delimiter": {
+            "title": "Delimiter",
+            "description": "Default delimiter",
+            "type": "string",
+            "maxLength": 1
+        },
+        "prefixes": {
+            "title": "Prefixes",
+            "description": "Prefixes for custom and non-flag options",
+            "$ref": "#/definitions/prefixes"
+        }
+    },
+    "definitions" : {
+        "default:string": {
+            "title": "String",
+            "description": "Default string",
+            "type": "string"
+        },
+        "default:array": {
+            "title": "Array",
+            "description": "Default array of strings",
+            "type":"array",
+            "items": [
+                {
+                "$ref": "#/definitions/default:string"
+                }
+            ]
+        },
+        "section": {
+            "title": "Sections",
+            "description": "Sections of help",
+            "type": "object",
+            "properties": {
+                "options": {
+                    "$ref": "#/definitions/section:default"
+                },
+                "usage": {
+                    "$ref": "#/definitions/section:default"
+                },
+                "examples": {
+                    "$ref": "#/definitions/section:default"
+                }
+            },
+            "additionalProperties": false
+        },
+        "section:default": {
+            "title": "Section",
+            "description": "Section of help",
+            "properties": {
+                "names": {
+                    "title": "Names",
+                    "description": "Names of section",
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/default:string"
+                        },
+                        {
+                            "$ref": "#/definitions/default:array"
+                        }
+                    ]
+                },
+                "postfix": {
+                    "title": "Postfixes",
+                    "description": "Postfixes, that will be added to a names if no names found",
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/default:string"
+                        },
+                        {
+                            "$ref": "#/definitions/default:array"
+                        }
+                    ]
+                },
+                "parseWhole": {
+                    "title": "Parse whole help",
+                    "description": "Parsing whole help if sections with names wasn't found",
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        },
+        "prefixes": {
+            "title": "Prefixes",
+            "description": "Prefixes for custom and non-flag options",
+            "type": "object",
+            "properties": {
+                "custom": {
+                    "title": "Custom prefix",
+                    "description": "Prefix for custom options (--help, --version, etc.)",
+                    "type": "string"
+                },
+                "nonFlag": {
+                    "title": "Non-flag prefix",
+                    "description": "Prefix for non-flag options",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "additionalProperties": false
+}
