@@ -22,16 +22,6 @@
         "test": "mocha",
         "semantic-release": "semantic-release"
     },
-    "files": [
-        "src/",
-        "bin.js",
-        "README.md"
-    ],
-    "publishConfig": {
-        "registry": "https://registry.npmjs.org/",
-        "tag": "latest",
-        "access": "public"
-    },
     "husky": {
         "hooks": {
             "pre-commit": "npm run test"
