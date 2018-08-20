@@ -1,48 +1,53 @@
 'use strict';
-const fs = require('fs');
-const argumentsTemplate = JSON.parse(fs.readFileSync('./src/template/args.json'));
-const optionTemplate = require('./template/option.json');
 
+/**
+ * Fill template schema with parsed arguments and return it
+ * @param {object} context - internal config with parsed arguments
+ * @param {object} config - user config
+ * @return {object} - filled template schema with parsed arguments
+ */
 const templatizer = (context, config) => {
-    argumentsTemplate.definitions.arguments.properties = {};
-    let result = argumentsTemplate;
+    let result = context.get.template.args();
     const customPrefix = config.prefixes.custom;
     const nonFlagPrefix = config.prefixes.nonFlag;
     context.options.map((option) => {
-        let optionSchema = Object.assign({}, optionTemplate);
+        let optionSchema = context.get.template.option();
         const argumentName = option.longName ? option.longName :
-                (option.shortName ? option.shortName : '');
+            (option.shortName ? option.shortName : '');
         switch (argumentName) {
             case '--version':
-                optionSchema.id = customPrefix + 'version';
-                optionSchema.type = 'null';
+                optionSchema.id = `${customPrefix}:version`;
+                optionSchema.type = null;
                 break;
             case '--help':
-                optionSchema.id = customPrefix + 'help';
-                optionSchema.type = 'null';
+                optionSchema.id = `${customPrefix}:help`;
+                optionSchema.type = null;
                 break;
             case '--config':
-                optionSchema.id = customPrefix + 'config';
+                optionSchema.id = `${customPrefix}:config`;
                 break;
             case '--stdin':
-                optionSchema.id = customPrefix + 'stdin';
+                optionSchema.id = `${customPrefix}:stdin`;
                 break;
             case '--stdin-filename':
             case '--stdin-filepath':
-                optionSchema.id = customPrefix + 'filename';
+                optionSchema.id = `${customPrefix}:filename`;
                 break;
             case '':
-                optionSchema.id = customPrefix + 'path';
+                optionSchema.id = `${customPrefix}:path`;
                 option.description = 'Path to file or folder to analyze';
                 break;
             default:
-                option.longName =
-                    option.longName ? option.longName : option.shortName;
-                optionSchema.id = (!option.isFlag ? nonFlagPrefix : '')
-                    + option.longName;
+                const prefix = !option.isFlag ? `${nonFlagPrefix}:` : '';
+                optionSchema.id = prefix + argumentName;
+                optionSchema.type = option.isFlag ? null : option.type;
         }
         optionSchema.description = option.description;
-        optionSchema.default = option.defaultValue ? option.defaultValue : null;
+        if (option.defaultValue !== null) {
+            optionSchema.default = option.defaultValue;
+        }
+        if (option.enum) optionSchema.enum = option.enum;
+        if (!option.usage) optionSchema.usage = option.usage;
         result.definitions.arguments.properties[argumentName] = optionSchema;
     });
 
@@ -50,4 +55,5 @@ const templatizer = (context, config) => {
     return result;
 };
 
+// Export function
 module.exports = templatizer;

@@ -7,7 +7,7 @@
          "$ref": "#/definitions/arguments"
       }
    ],
-   "delimiter": "=",
+   "delimiter": " ",
    "definitions": {
       "arguments": {
          "type": "object",
